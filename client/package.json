@@ -1,0 +1,21 @@
+{
+	"name": "hl7-ls-vscode-client",
+	"description": "VSCode client part of hl7-ls-vscode",
+	"author": "Kenton Hamaluik",
+	"license": "Apache-2.0",
+	"version": "0.0.1",
+	"publisher": "hamaluik",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hamaluik/hl7-ls-vscode"
+	},
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.75.1"
+	}
+}

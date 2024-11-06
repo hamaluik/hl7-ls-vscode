@@ -1,0 +1,62 @@
+{
+	"name": "hl7-ls-vscode",
+	"description": "A VSCode extension for the hl7-ls language server",
+	"author": "Kenton Hamaluik",
+	"license": "Apache-2.0",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hamaluik/hl7-ls-vscode"
+	},
+	"publisher": "hamaluik",
+	"categories": [],
+	"keywords": [
+		"ls",
+		"lsp",
+		"hl7"
+	],
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"activationEvents": [
+		"onLanguage:hl7"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "hl7",
+				"extensions": [
+					".hl7"
+				]
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "HL7 LS Configuration",
+			"properties": {
+				"hl7-ls.executablepath": {
+					"scope": "application",
+					"type": "string",
+					"default": "hl7-ls",
+					"description": "The absolute path to the hl7-ls binary"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint",
+		"postinstall": "cd client && npm install && cd .."
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.13.0",
+		"@stylistic/eslint-plugin": "^2.9.0",
+		"@types/node": "^20",
+		"eslint": "^9.13.0",
+		"typescript": "^5.6.2",
+		"typescript-eslint": "^8.11.0"
+	}
+}
