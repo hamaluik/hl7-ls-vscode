@@ -21,6 +21,7 @@
 	"activationEvents": [
 		"onLanguage:hl7"
 	],
+	"icon": "icon.png",
 	"main": "./client/out/extension",
 	"contributes": {
 		"languages": [
@@ -35,7 +36,7 @@
 			"type": "object",
 			"title": "HL7 LS Configuration",
 			"properties": {
-				"hl7-ls.executablepath": {
+				"hl7-ls.executablePath": {
 					"scope": "application",
 					"type": "string",
 					"default": "hl7-ls",

@@ -9,7 +9,7 @@ import {
 let client: LanguageClient;
 
 export function activate(_context: ExtensionContext) {
-	const executable: string = workspace.getConfiguration("hl7-ls").get("serverPath");
+	const executable: string = workspace.getConfiguration("hl7-ls").get("executablePath");
 
 	// TODO: build runtime args based on preferences in settings
 

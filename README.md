@@ -5,7 +5,7 @@ for HL7 messages. It uses the [hl7-ls](https://github.com/hamaluik/hl7-ls)
 language server to parse HL7 messages and provides several core LSP features
 for HL7 messages.
 
-![Demo](demo/demo.gif)
+![Demo](demo.gif)
 
 ## Installation
 
