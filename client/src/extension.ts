@@ -1,4 +1,4 @@
-import { ExtensionContext, workspace } from 'vscode';
+import { ExtensionContext, workspace, commands, window } from 'vscode';
 
 import {
 	LanguageClient,
@@ -7,8 +7,10 @@ import {
 } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
+let lastHost: string | undefined = undefined;
+let lastPort: number | undefined = undefined;
 
-export function activate(_context: ExtensionContext) {
+export function activate(context: ExtensionContext) {
 	const executable: string = workspace.getConfiguration("hl7-ls").get("executablePath");
 
 	// TODO: build runtime args based on preferences in settings
@@ -39,6 +41,46 @@ export function activate(_context: ExtensionContext) {
 		serverOptions,
 		clientOptions
 	);
+
+	context.subscriptions.push(commands.registerCommand('hl7-ls.sendMessage', async () => {
+		const uri = window.activeTextEditor?.document.uri.toString();
+		const hostname = await window.showInputBox({
+			prompt: "Hostname:",
+			value: lastHost,
+			valueSelection: [0, lastHost?.length ?? 0],
+			placeHolder: "localhost"
+		});
+		const port = await window.showInputBox({
+			prompt: "Port:",
+			value: lastPort?.toString(),
+			valueSelection: [0, lastPort?.toString()?.length ?? 0],
+			placeHolder: "2575",
+			validateInput: (value: string) => {
+				const port = parseInt(value);
+				if (isNaN(port) || port < 1 || port > 65535) {
+					return "Port must be a number between 1 and 65535";
+				}
+				return null;
+			}
+		});
+		if (!uri || !hostname || !port) {
+			return;
+		}
+		const portNum = parseInt(port);
+
+		lastHost = hostname;
+		lastPort = portNum;
+
+		const response: string = await client.sendRequest("workspace/executeCommand", {
+			command: "hl7.sendMessage", arguments: [
+				uri,
+				hostname,
+				portNum
+			]
+		});
+
+		window.showInformationMessage("HL7 response: \n\n" + response);
+	}));
 
 	client.start();
 }
