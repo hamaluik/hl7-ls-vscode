@@ -16,12 +16,12 @@ export function activate(_context: ExtensionContext) {
 	const serverOptions: ServerOptions = {
 		run: {
 			command: executable,
-			args: [],
+			args: ["--vscode"],
 		},
 		debug: {
 			command: executable,
 			//transport: TransportKind.stdio, // don't enable this; all it does is append `--stdio` to the args and breaks things
-			args: ["-vv", "--colour", "always", "log-to-file", "/tmp/hl7-ls-vscode.log"],
+			args: ["--vscode", "-vv", "--colour", "always", "log-to-file", "/tmp/hl7-ls-vscode.log"],
 		}
 	};
 
@@ -29,6 +29,7 @@ export function activate(_context: ExtensionContext) {
 		documentSelector: [{ scheme: 'file', language: 'hl7' }],
 		markdown: {
 			isTrusted: true,
+			supportHtml: true
 		}
 	};
 
