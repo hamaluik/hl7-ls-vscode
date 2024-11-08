@@ -11,19 +11,27 @@ let lastHost: string | undefined = undefined;
 let lastPort: number | undefined = undefined;
 
 export function activate(context: ExtensionContext) {
-	const executable: string = workspace.getConfiguration("hl7-ls").get("executablePath");
+	const executable: string | undefined = workspace.getConfiguration("hl7-ls").get("executablePath");
+	const defaultSendHost: string | undefined = workspace.getConfiguration("hl7-ls").get("defaultSendHost");
+	const defaultSendPort: number | undefined = workspace.getConfiguration("hl7-ls").get("defaultSendPort");
+	const disableStandardTableValidations: boolean | undefined = workspace.getConfiguration("hl7-ls").get("disableStandardTableValidations");
 
 	// TODO: build runtime args based on preferences in settings
+
+	const runArgs: string[] = ["--vscode"];
+	if (disableStandardTableValidations) {
+		runArgs.push("--disable-std-table-validations");
+	}
+	const debugArgs: string[] = runArgs.concat(["-vv", "--colour", "always", "log-to-file", "/tmp/hl7-ls-vscode.log"]);
 
 	const serverOptions: ServerOptions = {
 		run: {
 			command: executable,
-			args: ["--vscode"],
+			args: runArgs,
 		},
 		debug: {
 			command: executable,
-			//transport: TransportKind.stdio, // don't enable this; all it does is append `--stdio` to the args and breaks things
-			args: ["--vscode", "-vv", "--colour", "always", "log-to-file", "/tmp/hl7-ls-vscode.log"],
+			args: debugArgs,
 		}
 	};
 
@@ -46,14 +54,15 @@ export function activate(context: ExtensionContext) {
 		const uri = window.activeTextEditor?.document.uri.toString();
 		const hostname = await window.showInputBox({
 			prompt: "Hostname:",
-			value: lastHost,
-			valueSelection: [0, lastHost?.length ?? 0],
+			value: lastHost ?? defaultSendHost,
+			valueSelection: [0, (lastHost ?? defaultSendHost)?.length ?? 0],
 			placeHolder: "localhost"
 		});
+		const portValue = lastPort?.toString() ?? defaultSendPort?.toString() ?? "";
 		const port = await window.showInputBox({
 			prompt: "Port:",
-			value: lastPort?.toString(),
-			valueSelection: [0, lastPort?.toString()?.length ?? 0],
+			value: portValue,
+			valueSelection: [0, portValue.length],
 			placeHolder: "2575",
 			validateInput: (value: string) => {
 				const port = parseInt(value);

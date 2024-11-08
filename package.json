@@ -55,6 +55,24 @@
 					"type": "string",
 					"default": "hl7-ls",
 					"description": "The absolute path to the hl7-ls binary"
+				},
+				"hl7-ls.defaultSendHost": {
+					"scope": "resource",
+					"type": "string",
+					"default": "localhost",
+					"description": "The hostname of the HL7 server to send messages to by default"
+				},
+				"hl7-ls.defaultSendPort": {
+					"scope": "resource",
+					"type": "number",
+					"default": 2575,
+					"description": "The port of the HL7 server to send messages to by default"
+				},
+				"hl7-ls.disableStandardTableValidations": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Disable standard table validation diagnostics"
 				}
 			}
 		}
